@@ -19,14 +19,14 @@ void run_experiment(double non_zero_prob) {
 
   // Ordinary matrix multiplication (for small matrices only)
   if (MATRIX_SIZE <= 1000) {
-    double **dense_X = sparse_to_dense(X);
-    double **dense_Y = sparse_to_dense(Y);
+    int **dense_X = sparse_to_dense(X);
+    int **dense_Y = sparse_to_dense(Y);
 
-    double start_time = get_time();
-    double **result_ordinary = ordinary_matrix_multiply(dense_X, dense_Y);
-    double end_time = get_time();
+    int start_time = get_time();
+    int **result_ordinary = ordinary_matrix_multiply(dense_X, dense_Y);
+    int end_time = get_time();
 
-    printf("Ordinary matrix multiplication time: %.6f seconds\n", end_time - start_time);
+    printf("Ordinary matrix multiplication time: %.6d seconds\n", end_time - start_time);
 
     // Free memory
     free_2d_array(dense_X, MATRIX_SIZE);
@@ -62,7 +62,7 @@ void run_experiment(double non_zero_prob) {
     #pragma omp parallel for schedule(runtime)
     for (int j = 0; j < MATRIX_SIZE; j++) {
       // Dummy work to simulate computation
-      double sum = 0;
+      int sum = 0;
       for (int k = 0; k < 1000000; k++) {
         sum += k;
       }

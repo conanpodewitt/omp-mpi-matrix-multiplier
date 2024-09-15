@@ -1,5 +1,6 @@
 #include "matrix_operations.h"
 #include <omp.h>
+#include <string.h>
 
 int** ordinary_matrix_multiply(int **A, int **B) {
   int **C = allocate_2d_array(MATRIX_SIZE, MATRIX_SIZE);
