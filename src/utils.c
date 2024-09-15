@@ -103,3 +103,13 @@ double get_time() {
   clock_gettime(CLOCK_MONOTONIC, &ts);
   return (double)ts.tv_sec + (double)ts.tv_nsec / 1e9;
 }
+
+void print_boxed_output(int num_threads, double time, int nnz, int last) {
+  printf("+------------------------+------------------+----------------------+\n");
+  printf("| Threads                | Time (seconds)   | Non-zero Elements    |\n");
+  printf("+------------------------+------------------+----------------------+\n");
+  printf("| %-22d | %-16.6f | %-20d |\n", num_threads, time, nnz);
+  if (last) {
+    printf("+------------------------+------------------+----------------------+\n");
+  }
+}

@@ -26,7 +26,7 @@ void run_experiment(double non_zero_prob) {
     int **result_ordinary = ordinary_matrix_multiply(dense_X, dense_Y);
     double end_time = get_time();
 
-    printf("Ordinary matrix multiplication time: %.6d seconds\n", end_time - start_time);
+    printf("Ordinary matrix multiplication time: %.6f seconds\n", end_time - start_time);
 
     // Free memory
     free_2d_array(dense_X, MATRIX_SIZE);
@@ -44,9 +44,15 @@ void run_experiment(double non_zero_prob) {
     SparseMatrix *result_sparse = sparse_matrix_multiply(X, Y);
     double end_time = get_time();
 
-    printf("Sparse matrix multiplication time with %d threads: %.6d seconds\n", 
-            num_threads, end_time - start_time);
-    printf("Result matrix: %d non-zero elements\n", result_sparse->nnz);
+    // printf("Sparse matrix multiplication time with %d threads: %.6d seconds\n", 
+    //         num_threads, end_time - start_time);
+    // printf("Result matrix: %d non-zero elements\n", result_sparse->nnz);
+    // Nicer formatting
+    if (num_threads != MAX_THREADS) {
+      print_boxed_output(num_threads, end_time - start_time, result_sparse->nnz, 0);
+    } else {
+      print_boxed_output(num_threads, end_time - start_time, result_sparse->nnz, 1);
+    }
 
     // Free memory
     free_sparse_matrix(result_sparse);

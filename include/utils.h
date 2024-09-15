@@ -6,7 +6,7 @@
 #include <time.h>
 
 // Define matrix size
-#define MATRIX_SIZE 10000
+#define MATRIX_SIZE 1000
 
 // Structure to represent a sparse matrix in row-compressed format
 typedef struct {
@@ -38,5 +38,8 @@ SparseMatrix* read_sparse_matrix_from_file(const char *filename);
 
 // Timer function to measure execution time
 double get_time();
+
+// Display function to neatly format output
+void print_boxed_output(int num_threads, double time, int nnz, int last);
 
 #endif // UTILS_H
