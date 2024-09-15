@@ -1,5 +1,6 @@
 #include "utils.h"
 #include <string.h>
+#include <errno.h>
 
 int** allocate_2d_array(int rows, int cols) {
   int **arr = (int **)malloc(rows * sizeof(int *));
@@ -112,4 +113,61 @@ void print_boxed_output(int num_threads, double time, int nnz, int last) {
   if (last) {
     printf("+------------------------+------------------+----------------------+\n");
   }
+}
+
+void create_directory(const char *path) {
+  struct stat st = {0};
+  if (stat(path, &st) == -1) {
+    if (mkdir(path, 0700) == -1) {
+      fprintf(stderr, "Error creating directory %s: %s\n", path, strerror(errno));
+      exit(1);
+    }
+  }
+}
+
+void write_dense_matrix_to_csv(const char *filename, int **matrix, int rows, int cols) {
+  FILE *file = fopen(filename, "w");
+  if (file == NULL) {
+    fprintf(stderr, "Unable to open file for writing: %s\n", filename);
+    return;
+  }
+
+  for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < cols; j++) {
+      fprintf(file, "%d", matrix[i][j]);
+      if (j < cols - 1) fprintf(file, ",");
+    }
+    fprintf(file, "\n");
+  }
+
+  fclose(file);
+}
+
+void write_sparse_matrix_to_csv(const char *filename, SparseMatrix *matrix) {
+  FILE *file = fopen(filename, "w");
+  if (file == NULL) {
+    fprintf(stderr, "Unable to open file for writing: %s\n", filename);
+    return;
+  }
+
+  fprintf(file, "Row,Column,Value\n");
+  int row = 0;
+  for (int i = 0; i < matrix->nnz; i++) {
+    while (i >= matrix->row_ptr[row + 1]) row++;
+    fprintf(file, "%d,%d,%d\n", row, matrix->C[i], matrix->B[i]);
+  }
+
+  fclose(file);
+}
+
+void write_performance_to_csv(const char *filename, int num_threads, double time, int nnz) {
+  FILE *file = fopen(filename, "a");
+  if (file == NULL) {
+    fprintf(stderr, "Unable to open file for writing: %s\n", filename);
+    return;
+  }
+
+  fprintf(file, "%d,%.6f,%d\n", num_threads, time, nnz);
+
+  fclose(file);
 }

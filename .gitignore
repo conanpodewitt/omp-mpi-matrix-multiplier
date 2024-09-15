@@ -54,3 +54,4 @@ dkms.conf
 # Other
 sparse_matrix_mult
 c_cpp_properties.json
+run_*/

@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 // Define matrix size
 #define MATRIX_SIZE 1000
@@ -41,5 +43,11 @@ double get_time();
 
 // Display function to neatly format output
 void print_boxed_output(int num_threads, double time, int nnz, int last);
+
+// Data recording
+void create_directory(const char *path);
+void write_dense_matrix_to_csv(const char *filename, int **matrix, int rows, int cols);
+void write_sparse_matrix_to_csv(const char *filename, SparseMatrix *matrix);
+void write_performance_to_csv(const char *filename, int num_threads, double time, int nnz);
 
 #endif // UTILS_H
