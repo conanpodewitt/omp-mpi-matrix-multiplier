@@ -1,8 +1,8 @@
 #include "matrix_operations.h"
 #include <omp.h>
 
-double** ordinary_matrix_multiply(double **A, double **B) {
-  double **C = allocate_2d_array(MATRIX_SIZE, MATRIX_SIZE);
+int** ordinary_matrix_multiply(int **A, int **B) {
+  int **C = allocate_2d_array(MATRIX_SIZE, MATRIX_SIZE);
 
   #pragma omp parallel for collapse(2)
   for (int i = 0; i < MATRIX_SIZE; i++) {
@@ -85,8 +85,8 @@ SparseMatrix* sparse_matrix_multiply(SparseMatrix *A, SparseMatrix *B) {
   return C;
 }
 
-double** sparse_to_dense(SparseMatrix *A) {
-  double **dense = allocate_2d_array(MATRIX_SIZE, MATRIX_SIZE);
+int** sparse_to_dense(SparseMatrix *A) {
+  int **dense = allocate_2d_array(MATRIX_SIZE, MATRIX_SIZE);
 
   for (int i = 0; i < MATRIX_SIZE; i++) {
     for (int j = A->row_ptr[i]; j < A->row_ptr[i+1]; j++) {

@@ -1,15 +1,15 @@
 #include "utils.h"
 #include <string.h>
 
-double** allocate_2d_array(int rows, int cols) {
-  double **arr = (double **)malloc(rows * sizeof(double *));
+int** allocate_2d_array(int rows, int cols) {
+  int **arr = (int **)malloc(rows * sizeof(int *));
   if (arr == NULL) {
     fprintf(stderr, "Memory allocation failed\n");
     exit(1);
   }
 
   for (int i = 0; i < rows; i++) {
-    arr[i] = (double *)malloc(cols * sizeof(double));
+    arr[i] = (int *)malloc(cols * sizeof(int));
     if (arr[i] == NULL) {
       fprintf(stderr, "Memory allocation failed\n");
       exit(1);
@@ -19,7 +19,7 @@ double** allocate_2d_array(int rows, int cols) {
   return arr;
 }
 
-void free_2d_array(double **arr, int rows) {
+void free_2d_array(int **arr, int rows) {
   for (int i = 0; i < rows; i++) {
     free(arr[i]);
   }

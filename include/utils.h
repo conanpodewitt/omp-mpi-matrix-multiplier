@@ -19,10 +19,10 @@ typedef struct {
 // Function prototypes
 
 // Allocate memory for a 2D array
-double** allocate_2d_array(int rows, int cols);
+int** allocate_2d_array(int rows, int cols);
 
 // Free memory for a 2D array
-void free_2d_array(double **arr, int rows);
+void free_2d_array(int **arr, int rows);
 
 // Allocate memory for a SparseMatrix structure
 SparseMatrix* allocate_sparse_matrix(int nnz);
