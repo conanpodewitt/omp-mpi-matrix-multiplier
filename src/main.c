@@ -22,9 +22,9 @@ void run_experiment(double non_zero_prob) {
     int **dense_X = sparse_to_dense(X);
     int **dense_Y = sparse_to_dense(Y);
 
-    int start_time = get_time();
+    double start_time = get_time();
     int **result_ordinary = ordinary_matrix_multiply(dense_X, dense_Y);
-    int end_time = get_time();
+    double end_time = get_time();
 
     printf("Ordinary matrix multiplication time: %.6d seconds\n", end_time - start_time);
 
@@ -44,37 +44,13 @@ void run_experiment(double non_zero_prob) {
     SparseMatrix *result_sparse = sparse_matrix_multiply(X, Y);
     double end_time = get_time();
 
-    printf("Sparse matrix multiplication time with %d threads: %.6f seconds\n", 
+    printf("Sparse matrix multiplication time with %d threads: %.6d seconds\n", 
             num_threads, end_time - start_time);
     printf("Result matrix: %d non-zero elements\n", result_sparse->nnz);
 
     // Free memory
     free_sparse_matrix(result_sparse);
   }
-
-  // // Experiment with different OpenMP scheduling strategies
-  // const char *schedules[] = {"static", "dynamic", "guided", "auto"};
-  // omp_set_num_threads(omp_get_max_threads());  // Use max available threads
-
-  // for (int i = 0; i < 4; i++) {
-  //   double start_time = get_time();
-    
-  //   #pragma omp parallel for schedule(runtime)
-  //   for (int j = 0; j < MATRIX_SIZE; j++) {
-  //     // Dummy work to simulate computation
-  //     int sum = 0;
-  //     for (int k = 0; k < 1000000; k++) {
-  //       sum += k;
-  //     }
-  //   }
-
-  //   double end_time = get_time();
-
-  //   printf("Time with %s scheduling: %.6f seconds\n", schedules[i], end_time - start_time);
-
-  //   // Set the next scheduling strategy
-  //   omp_set_schedule(omp_sched_auto, 0);
-  // }
 
   // Free memory
   free_sparse_matrix(X);
