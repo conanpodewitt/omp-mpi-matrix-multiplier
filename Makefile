@@ -42,7 +42,7 @@ $(BINDIR):
 	mkdir -p $@
 
 # Clean up build files
-clean:
+clear:
 	rm -rf $(OBJDIR) $(BINDIR)
 
 # Dependency rules

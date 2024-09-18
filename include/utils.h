@@ -8,7 +8,7 @@
 #include <sys/types.h>
 
 // Define matrix size
-#define MATRIX_SIZE 10000
+#define MATRIX_SIZE 100000
 
 // Structure to represent a sparse matrix in row-compressed format
 typedef struct {
