@@ -10,17 +10,6 @@
 #define NUM_EXPERIMENTS 3
 #define MAX_THREADS 32
 
-char* create_path(const char* base, const char* addition) {
-  size_t len = strlen(base) + strlen(addition) + 2;  // +1 for '/' and +1 for null terminator
-  char* result = malloc(len);
-  if (result == NULL) {
-    fprintf(stderr, "Memory allocation failed\n");
-    exit(1);
-  }
-  snprintf(result, len, "%s/%s", base, addition);
-  return result;
-}
-
 void run_experiment(double non_zero_prob, const char *base_dir) {
   printf("\nRunning experiment with non-zero probability: %.2f\n", non_zero_prob);
 
@@ -67,13 +56,13 @@ void run_experiment(double non_zero_prob, const char *base_dir) {
     write_performance_to_csv(filename, 1, end_time - start_time, MATRIX_SIZE * MATRIX_SIZE);
     free(filename);
 
-    // Free memory
-    free_2d_array(dense_X, MATRIX_SIZE);
-    free_2d_array(dense_Y, MATRIX_SIZE);
-    free_2d_array(result_ordinary, MATRIX_SIZE);
-    free(ordinary_dir);
+      // Free memory
+      free_2d_array(dense_X, MATRIX_SIZE);
+      free_2d_array(dense_Y, MATRIX_SIZE);
+      free_2d_array(result_ordinary, MATRIX_SIZE);
+      free(ordinary_dir);
   } else {
-    printf("Skipping ordinary matrix multiplication due to large matrix size.\n");
+      printf("Skipping ordinary matrix multiplication due to large matrix size.\n");
   }
 
   // Sparse matrix multiplication with varying thread counts

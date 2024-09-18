@@ -45,6 +45,7 @@ double get_time();
 void print_boxed_output(int num_threads, double time, int nnz, int last);
 
 // Data recording
+char* create_path(const char* base, const char* addition);
 void create_directory(const char *path);
 void write_dense_matrix_to_csv(const char *filename, int **matrix, int rows, int cols);
 void write_sparse_matrix_to_csv(const char *filename, SparseMatrix *matrix);

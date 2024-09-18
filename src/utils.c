@@ -115,6 +115,17 @@ void print_boxed_output(int num_threads, double time, int nnz, int last) {
   }
 }
 
+char* create_path(const char* base, const char* addition) {
+  size_t len = strlen(base) + strlen(addition) + 2;  // +1 for '/' and +1 for null terminator
+  char* result = malloc(len);
+  if (result == NULL) {
+    fprintf(stderr, "Memory allocation failed\n");
+    exit(1);
+  }
+  snprintf(result, len, "%s/%s", base, addition);
+  return result;
+}
+
 void create_directory(const char *path) {
   struct stat st = {0};
   if (stat(path, &st) == -1) {
