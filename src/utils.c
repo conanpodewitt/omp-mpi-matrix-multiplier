@@ -130,8 +130,10 @@ void create_directory(const char *path) {
   struct stat st = {0};
   if (stat(path, &st) == -1) {
     if (mkdir(path, 0700) == -1) {
-      fprintf(stderr, "Error creating directory %s: %s\n", path, strerror(errno));
-      exit(1);
+      if (errno != EEXIST) {  // If the error is not "File exists"
+        fprintf(stderr, "Error creating directory %s: %s\n", path, strerror(errno));
+        exit(1);
+      }
     }
   }
 }
