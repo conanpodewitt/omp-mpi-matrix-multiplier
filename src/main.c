@@ -53,7 +53,7 @@ void run_experiment(double non_zero_prob, const char *base_dir) {
 
     // Write performance to CSV
     filename = create_path(ordinary_dir, "performance_ordinary.csv");
-    write_performance_to_csv(filename, 1, end_time - start_time, MATRIX_SIZE * MATRIX_SIZE);
+    write_performance_to_csv(filename, 1, end_time - start_time, (unsigned int)MATRIX_SIZE * MATRIX_SIZE);
     free(filename);
 
       // Free memory

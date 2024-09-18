@@ -5,8 +5,8 @@
 
 SparseMatrix* generate_sparse_matrix(double non_zero_prob) {
   int nnz = 0;
-  int *temp_B = malloc(MATRIX_SIZE * MATRIX_SIZE * sizeof(int));
-  int *temp_C = malloc(MATRIX_SIZE * MATRIX_SIZE * sizeof(int));
+  int *temp_B = malloc((unsigned int)MATRIX_SIZE * MATRIX_SIZE * sizeof(int));
+  int *temp_C = malloc((unsigned int)MATRIX_SIZE * MATRIX_SIZE * sizeof(int));
   int *row_ptr = calloc(MATRIX_SIZE + 1, sizeof(int));
 
   if (!temp_B || !temp_C || !row_ptr) {

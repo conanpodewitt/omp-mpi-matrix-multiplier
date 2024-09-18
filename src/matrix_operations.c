@@ -19,8 +19,8 @@ int** ordinary_matrix_multiply(int **A, int **B) {
 }
 
 SparseMatrix* sparse_matrix_multiply(SparseMatrix *A, SparseMatrix *B) {
-  int *temp_B = calloc(MATRIX_SIZE * MATRIX_SIZE, sizeof(int));
-  int *temp_C = calloc(MATRIX_SIZE * MATRIX_SIZE, sizeof(int));
+  int *temp_B = calloc((unsigned int)MATRIX_SIZE * MATRIX_SIZE, sizeof(int));
+  int *temp_C = calloc((unsigned int)MATRIX_SIZE * MATRIX_SIZE, sizeof(int));
   int *row_ptr = calloc(MATRIX_SIZE + 1, sizeof(int));
 
   if (!temp_B || !temp_C || !row_ptr) {
