@@ -22,20 +22,23 @@ int** parallel_compressed_matrix_multiply(int** matrix_xb, int** matrix_xc, int*
     int** result = allocate_2d_array(NUM_ROWS, NUM_COLUMNS);
 
     // Initialize scheduling type
-    switch (SCHEDULE) {
-        case 1:
-            omp_set_schedule(omp_sched_static, CHUNK_SIZE);
-            break;
-        case 2:
-            omp_set_schedule(omp_sched_dynamic, CHUNK_SIZE);
-            break;
-        case 3:
-            omp_set_schedule(omp_sched_guided, CHUNK_SIZE);
-            break;
-        default:
-            omp_set_schedule(omp_sched_static, CHUNK_SIZE);
-            break;
-    }
+switch (SCHEDULE) {
+    case 1:
+        omp_set_schedule(omp_sched_static, CHUNK_SIZE);
+        break;
+    case 2:
+        omp_set_schedule(omp_sched_dynamic, CHUNK_SIZE);
+        break;
+    case 3:
+        omp_set_schedule(omp_sched_guided, CHUNK_SIZE);
+        break;
+    case 4:
+        omp_set_schedule(omp_sched_auto, CHUNK_SIZE);
+        break;
+    default:
+        omp_set_schedule(omp_sched_static, CHUNK_SIZE);
+        break;
+}
 
     // Parallelize the outermost loop
     #pragma omp parallel for schedule(runtime)
