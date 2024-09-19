@@ -5,6 +5,10 @@
 #include <stdlib.h>
 #include <time.h>
 #include <omp.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <string.h>
 
 // Define matrix size
 #define NUM_ROWS 100
@@ -22,4 +26,12 @@ int** allocate_2d_array(int rows, int cols);
 void free_2d_array(int **arr, int rows);
 double omp_get_wtime();
 
-#endif // UTILS_H
+// New function prototypes
+void create_directory(const char *path);
+void write_matrix_to_file(const char *filename, int **matrix, int rows, int cols);
+void write_compressed_matrix_to_file(const char *filename, int **matrix, int rows, int cols);
+void write_performance_to_csv(const char *filename, int schedule, int chunk_size, int num_rows, int num_cols, double *times, int num_threads);
+void write_result_to_csv(const char *filename, int **matrix, int rows, int cols);
+char* generate_unique_run_directory();
+
+#endif // U

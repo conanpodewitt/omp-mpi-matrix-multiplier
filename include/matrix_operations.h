@@ -4,6 +4,7 @@
 #include "utils.h"
 
 // Function prototypes
+int** multiply_matrices(int** matrix1, int** matrix2);
 int** parallel_compressed_matrix_multiply(int** matrix_xb, int** matrix_xc, int* row_counts_x, 
                                           int** matrix_yb, int** matrix_yc, int* row_counts_y, 
                                           int debug);

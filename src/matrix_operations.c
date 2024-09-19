@@ -1,5 +1,20 @@
 #include "matrix_operations.h"
 
+int** multiply_matrices(int** matrix1, int** matrix2) {
+    int** result = allocate_2d_array(NUM_ROWS, NUM_COLUMNS);
+
+    for (int i = 0; i < NUM_ROWS; i++) {
+        for (int j = 0; j < NUM_COLUMNS; j++) {
+            result[i][j] = 0;
+            for (int k = 0; k < NUM_COLUMNS; k++) {
+                result[i][j] += matrix1[i][k] * matrix2[k][j];
+            }
+        }
+    }
+
+    return result;
+}
+
 int** parallel_compressed_matrix_multiply(int** matrix_xb, int** matrix_xc, int* row_counts_x, 
                                           int** matrix_yb, int** matrix_yc, int* row_counts_y, 
                                           int debug) {
