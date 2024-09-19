@@ -13,11 +13,11 @@ EXECUTABLE = $(BINDIR)/sparse_matrix_mult
 # OS-Specific Flags
 ifeq ($(UNAME_S), Linux)
     CC = gcc
-    CFLAGS = -Wall -Wextra -O3 -fopenmp
+    CFLAGS = -Wall -Wextra -O3 -march=native -fopenmp
     LDFLAGS = -fopenmp
 else ifeq ($(UNAME_S), Darwin)
     CC = gcc
-    CFLAGS = -Wall -Wextra -O3 -Xpreprocessor -fopenmp -I/opt/homebrew/Cellar/libomp/18.1.8/include
+    CFLAGS = -Wall -Wextra -O3 -march=native -Xpreprocessor -fopenmp -I/opt/homebrew/Cellar/libomp/18.1.8/include
     LDFLAGS = -L/opt/homebrew/Cellar/libomp/18.1.8/lib -lomp
 endif
 
