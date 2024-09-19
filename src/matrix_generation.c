@@ -1,74 +1,15 @@
-#include "matrix_operations.h"
+#include "matrix_generation.h"
 
-int** parallel_compressed_matrix_multiply(int** matrix_xb, int** matrix_xc, int* row_counts_x, 
-                                          int** matrix_yb, int** matrix_yc, int* row_counts_y, 
-                                          int debug) {
-    // Allocate memory for the result matrix
-    int** result = allocate_2d_array(NUM_ROWS, NUM_COLUMNS);
-
-    // Initialize scheduling type
-    switch (SCHEDULE) {
-        case 1:
-            omp_set_schedule(omp_sched_static, CHUNK_SIZE);
-            break;
-        case 2:
-            omp_set_schedule(omp_sched_dynamic, CHUNK_SIZE);
-            break;
-        case 3:
-            omp_set_schedule(omp_sched_guided, CHUNK_SIZE);
-            break;
-        default:
-            omp_set_schedule(omp_sched_static, CHUNK_SIZE);
-            break;
-    }
-
-    // Parallelize the outermost loop
-    #pragma omp parallel for schedule(runtime)
+int** generate_matrix(float non_zero_prob) {
+    int** matrix = allocate_2d_array(NUM_ROWS, NUM_COLUMNS);
+    
     for (int i = 0; i < NUM_ROWS; i++) {
-        // For each non-zero element in row i of matrix_xb
-        for (int x_idx = 0; x_idx < row_counts_x[i]; x_idx++) {
-            int x_value = matrix_xb[i][x_idx];     // Non-zero element in matrix X
-            int x_col = matrix_xc[i][x_idx];       // Corresponding column index in X
-            // Multiply with non-zero elements in row x_col of matrix Y
-            for (int y_idx = 0; y_idx < row_counts_y[x_col]; y_idx++) {
-                int y_value = matrix_yb[x_col][y_idx]; // Non-zero element in matrix Y
-                int y_col = matrix_yc[x_col][y_idx];   // Corresponding column index in Y
-                // Accumulate the result in the appropriate position
-                #pragma omp atomic // Ensure atomic addition to avoid race conditions
-                result[i][y_col] += x_value * y_value;
-            }
-        }
-    }
-
-    if (debug) {
-        // Print the result matrix for verification
-        printf("Result:\n");
-        for (int i = 0; i < NUM_ROWS; i++) {
-            printf("Row %d: ", i);
-            for (int j = 0; j < NUM_COLUMNS; j++) {
-                printf("%d ", result[i][j]);
-            }
-            printf("\n");
-        }
-    }
-
-    return result;
-}
-
-void compress_matrix(int** matrix, int*** compressed_values, int*** compressed_cols, int** row_counts) {
-    *compressed_values = allocate_2d_array(NUM_ROWS, NUM_COLUMNS);
-    *compressed_cols = allocate_2d_array(NUM_ROWS, NUM_COLUMNS);
-    *row_counts = (int*)calloc(NUM_ROWS, sizeof(int));
-
-    for (int i = 0; i < NUM_ROWS; i++) {
-        int count = 0;
         for (int j = 0; j < NUM_COLUMNS; j++) {
-            if (matrix[i][j] != 0) {
-                (*compressed_values)[i][count] = matrix[i][j];
-                (*compressed_cols)[i][count] = j;
-                count++;
+            if ((float)rand() / RAND_MAX < non_zero_prob) {
+                matrix[i][j] = rand() % 100 + 1;  // Random non-zero value between 1 and 100
             }
         }
-        (*row_counts)[i] = count;
     }
+    
+    return matrix;
 }
