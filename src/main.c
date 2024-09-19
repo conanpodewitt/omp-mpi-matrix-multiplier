@@ -8,11 +8,14 @@ int main() {
     // Seed the random number generator
     srand(time(NULL));
 
+    printf("Scheduling mode: %d\n", SCHEDULE);
+    printf("Chunk size: %d\n", CHUNK_SIZE);
+    printf("Starting rows: %d\n", NUM_ROWS);
+    printf("Starting cols: %d\n", NUM_COLUMNS);
+
     // Set the probability of non-zero elements
     float p = 0.01;
     printf("Probability of non-zero elements: %f\n", p);
-    printf("Scheduling mode: %d\n", SCHEDULE);
-    printf("Chunk size: %d\n", CHUNK_SIZE);
 
     // Generate matrix_x and matrix_y
     int** matrix_x = generate_matrix(p);
@@ -35,7 +38,7 @@ int main() {
     free_2d_array(matrix_y, NUM_ROWS);
 
     // Multiply X and Y with different numbers of threads
-    for (int i = 4; i <= 112; i += 4) {
+    for (int i = 4; i <= MAX_THREADS; i += 4) {
         omp_set_num_threads(i);
         double start_time = omp_get_wtime();
 

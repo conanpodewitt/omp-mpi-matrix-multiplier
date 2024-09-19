@@ -9,6 +9,8 @@
 // Define matrix size
 #define NUM_ROWS 100
 #define NUM_COLUMNS 100
+// Select maximum number of threads
+#define MAX_THREADS 128
 // Choose a scheduling type: 1 for static, 2 for dynamic, 3 for guided
 #define SCHEDULE 2
 #define CHUNK_SIZE 10
