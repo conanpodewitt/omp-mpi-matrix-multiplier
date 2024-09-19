@@ -23,22 +23,39 @@ int** parallel_compressed_matrix_multiply(int** matrix_xb, int** matrix_xc, int*
 
     // Initialize scheduling type
 switch (SCHEDULE) {
-    case 1:
-        omp_set_schedule(omp_sched_static, CHUNK_SIZE);
+    case 1: // Static
+        if (CHUNK_SIZE > 0) {
+            omp_set_schedule(omp_sched_static, CHUNK_SIZE);
+        } else {
+            omp_set_schedule(omp_sched_static, 1);  // Default chunk size
+        }
         break;
-    case 2:
-        omp_set_schedule(omp_sched_dynamic, CHUNK_SIZE);
+    case 2: // Dynamic
+        if (CHUNK_SIZE > 0) {
+            omp_set_schedule(omp_sched_dynamic, CHUNK_SIZE);
+        } else {
+            omp_set_schedule(omp_sched_dynamic, 1);  // Default chunk size
+        }
         break;
-    case 3:
-        omp_set_schedule(omp_sched_guided, CHUNK_SIZE);
+    case 3: // Guided
+        if (CHUNK_SIZE > 0) {
+            omp_set_schedule(omp_sched_guided, CHUNK_SIZE);
+        } else {
+            omp_set_schedule(omp_sched_guided, 1);  // Default chunk size
+        }
         break;
-    case 4:
-        omp_set_schedule(omp_sched_auto, CHUNK_SIZE);
+    case 4: // Auto (no chunk size needed)
+        omp_set_schedule(omp_sched_auto, 0);  // Chunk size is ignored for auto
         break;
-    default:
-        omp_set_schedule(omp_sched_static, CHUNK_SIZE);
+    default: // Default to static
+        if (CHUNK_SIZE > 0) {
+            omp_set_schedule(omp_sched_static, CHUNK_SIZE);
+        } else {
+            omp_set_schedule(omp_sched_static, 1);  // Default chunk size
+        }
         break;
 }
+
 
     // Parallelize the outermost loop
     #pragma omp parallel for schedule(runtime)
