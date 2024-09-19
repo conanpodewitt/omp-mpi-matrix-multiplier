@@ -1,50 +1,74 @@
-#include "matrix_generation.h"
-#include <string.h>
-#include <stdlib.h>
-#include <time.h>
+#include "matrix_operations.h"
 
-SparseMatrix* generate_sparse_matrix(double non_zero_prob) {
-  int nnz = 0;
-  int *temp_B = malloc((unsigned int)MATRIX_SIZE * MATRIX_SIZE * sizeof(int));
-  int *temp_C = malloc((unsigned int)MATRIX_SIZE * MATRIX_SIZE * sizeof(int));
-  int *row_ptr = calloc(MATRIX_SIZE + 1, sizeof(int));
+int** parallel_compressed_matrix_multiply(int** matrix_xb, int** matrix_xc, int* row_counts_x, 
+                                          int** matrix_yb, int** matrix_yc, int* row_counts_y, 
+                                          int debug) {
+    // Allocate memory for the result matrix
+    int** result = allocate_2d_array(NUM_ROWS, NUM_COLUMNS);
 
-  if (!temp_B || !temp_C || !row_ptr) {
-    fprintf(stderr, "Memory allocation failed in generate_sparse_matrix\n");
-    exit(1);
-  }
-
-  srand(time(NULL));
-
-  for (int i = 0; i < MATRIX_SIZE; i++) {
-    for (int j = 0; j < MATRIX_SIZE; j++) {
-      if ((double)rand() / RAND_MAX < non_zero_prob) {
-        temp_B[nnz] = rand() % 10 + 1;  // Random integer between 1 and 10
-        temp_C[nnz] = j;
-        nnz++;
-        row_ptr[i + 1]++;
-      }
+    // Initialize scheduling type
+    switch (SCHEDULE) {
+        case 1:
+            omp_set_schedule(omp_sched_static, CHUNK_SIZE);
+            break;
+        case 2:
+            omp_set_schedule(omp_sched_dynamic, CHUNK_SIZE);
+            break;
+        case 3:
+            omp_set_schedule(omp_sched_guided, CHUNK_SIZE);
+            break;
+        default:
+            omp_set_schedule(omp_sched_static, CHUNK_SIZE);
+            break;
     }
-  }
 
-  // Calculate cumulative sum for row_ptr
-  for (int i = 1; i <= MATRIX_SIZE; i++) {
-    row_ptr[i] += row_ptr[i - 1];
-  }
+    // Parallelize the outermost loop
+    #pragma omp parallel for schedule(runtime)
+    for (int i = 0; i < NUM_ROWS; i++) {
+        // For each non-zero element in row i of matrix_xb
+        for (int x_idx = 0; x_idx < row_counts_x[i]; x_idx++) {
+            int x_value = matrix_xb[i][x_idx];     // Non-zero element in matrix X
+            int x_col = matrix_xc[i][x_idx];       // Corresponding column index in X
+            // Multiply with non-zero elements in row x_col of matrix Y
+            for (int y_idx = 0; y_idx < row_counts_y[x_col]; y_idx++) {
+                int y_value = matrix_yb[x_col][y_idx]; // Non-zero element in matrix Y
+                int y_col = matrix_yc[x_col][y_idx];   // Corresponding column index in Y
+                // Accumulate the result in the appropriate position
+                #pragma omp atomic // Ensure atomic addition to avoid race conditions
+                result[i][y_col] += x_value * y_value;
+            }
+        }
+    }
 
-  SparseMatrix *matrix = allocate_sparse_matrix(nnz);
-  memcpy(matrix->B, temp_B, nnz * sizeof(int));
-  memcpy(matrix->C, temp_C, nnz * sizeof(int));
-  memcpy(matrix->row_ptr, row_ptr, (MATRIX_SIZE + 1) * sizeof(int));
+    if (debug) {
+        // Print the result matrix for verification
+        printf("Result:\n");
+        for (int i = 0; i < NUM_ROWS; i++) {
+            printf("Row %d: ", i);
+            for (int j = 0; j < NUM_COLUMNS; j++) {
+                printf("%d ", result[i][j]);
+            }
+            printf("\n");
+        }
+    }
 
-  free(temp_B);
-  free(temp_C);
-  free(row_ptr);
-
-  return matrix;
+    return result;
 }
 
-void generate_matrix_pair(double non_zero_prob, SparseMatrix **X, SparseMatrix **Y) {
-  *X = generate_sparse_matrix(non_zero_prob);
-  *Y = generate_sparse_matrix(non_zero_prob);
+void compress_matrix(int** matrix, int*** compressed_values, int*** compressed_cols, int** row_counts) {
+    *compressed_values = allocate_2d_array(NUM_ROWS, NUM_COLUMNS);
+    *compressed_cols = allocate_2d_array(NUM_ROWS, NUM_COLUMNS);
+    *row_counts = (int*)calloc(NUM_ROWS, sizeof(int));
+
+    for (int i = 0; i < NUM_ROWS; i++) {
+        int count = 0;
+        for (int j = 0; j < NUM_COLUMNS; j++) {
+            if (matrix[i][j] != 0) {
+                (*compressed_values)[i][count] = matrix[i][j];
+                (*compressed_cols)[i][count] = j;
+                count++;
+            }
+        }
+        (*row_counts)[i] = count;
+    }
 }

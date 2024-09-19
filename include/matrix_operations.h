@@ -3,13 +3,10 @@
 
 #include "utils.h"
 
-// Perform ordinary matrix multiplication
-int** ordinary_matrix_multiply(int **A, int **B);
-
-// Perform sparse matrix multiplication
-SparseMatrix* sparse_matrix_multiply(SparseMatrix *A, SparseMatrix *B);
-
-// Convert a sparse matrix to a dense matrix (for testing purposes)
-int** sparse_to_dense(SparseMatrix *A);
+// Function prototypes
+int** parallel_compressed_matrix_multiply(int** matrix_xb, int** matrix_xc, int* row_counts_x, 
+                                          int** matrix_yb, int** matrix_yc, int* row_counts_y, 
+                                          int debug);
+void compress_matrix(int** matrix, int*** compressed_values, int*** compressed_cols, int** row_counts);
 
 #endif // MATRIX_OPERATIONS_H
