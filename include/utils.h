@@ -11,15 +11,17 @@
 #include <string.h>
 
 // Define matrix size
-#define NUM_ROWS 100
-#define NUM_COLUMNS 100
+#define NUM_ROWS 100000
+#define NUM_COLUMNS 100000
+// Set the probability of non-zero elements
+#define PROB 0.01
 // Select maximum number of threads
 #define MAX_THREADS 128
 // Choose a scheduling type: 1 for static, 2 for dynamic, 3 for guided, 4 for auto
 #define SCHEDULE 2
 // Select chunk size for scheduling. Use 0 for default chunk size in static, dynamic, and guided schedules.
 // For omp_sched_auto, the chunk size is ignored.
-#define CHUNK_SIZE 10
+#define CHUNK_SIZE 0
 // Set as 0 or 1 to enable debugging, prints result matrix to terminal
 #define DEBUG 0
 

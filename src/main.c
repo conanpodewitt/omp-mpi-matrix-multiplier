@@ -11,10 +11,7 @@ int main() {
     printf("Chunk size: %d\n", CHUNK_SIZE);
     printf("Starting rows: %d\n", NUM_ROWS);
     printf("Starting cols: %d\n", NUM_COLUMNS);
-
-    // Set the probability of non-zero elements
-    float p = 0.01;
-    printf("Probability of non-zero elements: %f\n", p);
+    printf("Probability of non-zero elements: %f\n", PROB);
 
     // Generate unique run directory
     char *run_dir = generate_unique_run_directory();
@@ -25,8 +22,8 @@ int main() {
     create_directory(dir_y);
 
     // Generate matrix_x and matrix_y
-    int** matrix_x = generate_matrix(p);
-    int** matrix_y = generate_matrix(p);
+    int** matrix_x = generate_matrix(PROB);
+    int** matrix_y = generate_matrix(PROB);
 
     // Write original matrices to files
     char file_x[256], file_y[256];
