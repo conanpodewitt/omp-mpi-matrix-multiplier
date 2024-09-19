@@ -13,7 +13,7 @@ EXECUTABLE = $(BINDIR)/sparse_matrix_mult
 # OS-Specific Flags
 ifeq ($(UNAME_S), Linux)
     CC = gcc
-    CFLAGS = -Wall -Wextra -O3 -fopenmp
+    CFLAGS = -Wall -Wextra -O3 -fopenmp -march=native -ffast-math
     LDFLAGS = -fopenmp
 else ifeq ($(UNAME_S), Darwin)
     CC = gcc
