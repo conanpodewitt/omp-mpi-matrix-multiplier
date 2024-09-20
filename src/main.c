@@ -86,7 +86,7 @@ int main() {
 
         double end_time = omp_get_wtime();
         times[(i/4)-1] = end_time - start_time;
-        printf("Num Threads: %d, Time (s): %f\n", i, times[(i/4)-1]);
+        printf("Threads: %d, Time: %f\n", i, times[(i/4)-1]);
 
         // Save the first result
         if (i == 4) {
@@ -96,9 +96,9 @@ int main() {
         }
     }
 
-    // Write the first result to CompressResults.csv
+    // Write the first result to CompressedResults.csv
     char compress_file[256];
-    snprintf(compress_file, sizeof(compress_file), "%s/CompressResults.csv", run_dir);
+    snprintf(compress_file, sizeof(compress_file), "%s/CompressedResults.csv", run_dir);
     write_result_to_csv(compress_file, first_result, NUM_ROWS, NUM_COLUMNS);
 
     // Write performance data to Performance.csv
