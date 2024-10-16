@@ -11,8 +11,8 @@
 #include <string.h>
 
 // Define matrix size
-#define NUM_ROWS 1000
-#define NUM_COLUMNS 1000
+#define NUM_ROWS 100
+#define NUM_COLUMNS 100
 // Set the probability of non-zero elements
 #define PROB 0.01
 // Select maximum number of threads

@@ -52,6 +52,7 @@ Mkfile.old
 dkms.conf
 
 # Other
+.vscode/
 sparse_matrix_mult
 settings.json
 c_cpp_properties.json
