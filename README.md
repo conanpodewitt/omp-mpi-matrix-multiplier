@@ -1,12 +1,10 @@
-# OMP-Matrix-Multiplication
+# omp-matrix-multiplier
 
-**Ayodhya Jayawickrema 22880852**
+**Ayodhya Jayawickrema (22880852) [GitHub](https://github.com/conanpodewitt)**
 
-**Conan Dewitt 22877792**
+**Conan Dewitt (22877792) [GitHub](https://github.com/Ayodhya27)**
 
 This is a C based project that has been designed to test different OpenMP scheduling methods and how different thread count impacts its ability perform matrix multiplication upon two randomly generated, sparse matrices. The matrices are initialised with a given probability of non-zero elements and then repeatedly multiplied through the use of row compression with an increasing amount of threads each time.
-
-![Matrix](https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Matrix_multiplication_qtl1.svg/2880px-Matrix_multiplication_qtl1.svg.png)
 
 ## Features
 - **Row and Column Initialisation:** The program allows users to specify the number of rows; `NUM_ROWS`, and columns; `NUM_COLS`, for the two input matrices (Matrix X and Matrix Y).
