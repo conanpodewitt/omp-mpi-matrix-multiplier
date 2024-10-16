@@ -43,7 +43,6 @@ All starting parameters can be adjusted through the `#define` definitions at the
 ```c
 // utils.h
 ...
-
 // Define matrix size
 #define NUM_ROWS 1000
 #define NUM_COLUMNS 1000
@@ -57,7 +56,6 @@ All starting parameters can be adjusted through the `#define` definitions at the
 #define CHUNK_SIZE 0
 // Set as 0 or 1 to enable debugging, prints result matrix to terminal
 #define DEBUG 0
-
 ...
 ```
 
@@ -66,7 +64,6 @@ The function responsible for generating the B and C matrices is called `compress
 ```c
 // matrix_operations.c
 ...
-
 void compress_matrix(int** matrix, int*** compressed_values, int*** compressed_cols, int** row_counts) {
     *compressed_values = allocate_2d_array(NUM_ROWS, NUM_COLUMNS);
     *compressed_cols = allocate_2d_array(NUM_ROWS, NUM_COLUMNS);
@@ -84,7 +81,6 @@ void compress_matrix(int** matrix, int*** compressed_values, int*** compressed_c
         (*row_counts)[i] = count;
     }
 }
-
 ...
 ```
 
