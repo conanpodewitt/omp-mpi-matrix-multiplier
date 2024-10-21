@@ -24,7 +24,7 @@
 #define PARALLEL_METHOD METHOD_OMP
 
 // Enable file generation
-#define GENERATE_FILES 0
+#define GENERATE_FILES 1
 
 // OMP Performance parameters
 // Select maximum number of threads
@@ -57,7 +57,6 @@ void delete_temp();
 void write_matrix_to_file(const char *filename, int **matrix, int rows, int cols);
 void write_compressed_matrix_to_file(const char *filename, int **matrix, int rows, int cols);
 void write_performance_to_file(const char *filename, int num_rows, int num_cols, float prob, int method, int schedule, int chunk_size, double *times, int num_threads);
-void write_result_to_file(const char *filename, int **matrix, int rows, int cols);
 
 void check_mpi_error(int error_code, const char* message);
 

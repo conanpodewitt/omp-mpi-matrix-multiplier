@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
 
                 char ordinary_file[256];
                 snprintf(ordinary_file, sizeof(ordinary_file), "%s/SequentialResults.csv", run_dir);
-                write_result_to_file(ordinary_file, ordinary_result, NUM_ROWS, NUM_COLUMNS);
+                write_matrix_to_file(ordinary_file, ordinary_result, NUM_ROWS, NUM_COLUMNS);
                 free_2d_array(ordinary_result, NUM_ROWS);
             }
         }
@@ -192,7 +192,7 @@ int main(int argc, char **argv) {
         snprintf(compress_file, sizeof(compress_file), "%s/ParallelResults.csv", run_dir);
         snprintf(performance_file, sizeof(performance_file), "%s/Performance.csv", run_dir);
         
-        write_result_to_file(compress_file, first_result, NUM_ROWS, NUM_COLUMNS);
+        write_matrix_to_file(compress_file, first_result, NUM_ROWS, NUM_COLUMNS);
         write_performance_to_file(performance_file, NUM_ROWS, NUM_COLUMNS, PROB, 
                                 PARALLEL_METHOD, SCHEDULE, CHUNK_SIZE, times, MAX_THREADS/4);
 

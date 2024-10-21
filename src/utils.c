@@ -173,22 +173,6 @@ void write_performance_to_file(const char *filename, int num_rows, int num_cols,
     fclose(file);
 }
 
-void write_result_to_file(const char *filename, int **matrix, int rows, int cols) {
-    FILE *file = fopen(filename, "w");
-    if (file == NULL) {
-        fprintf(stderr, "Error opening file %s\n", filename);
-        return;
-    }
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            fprintf(file, "%d", matrix[i][j]);
-            if (j < cols - 1) fprintf(file, ",");
-        }
-        fprintf(file, "\n");
-    }
-    fclose(file);
-}
-
 void check_mpi_error(int error_code, const char* message) {
     if (error_code != MPI_SUCCESS) {
         char error_string[MPI_MAX_ERROR_STRING];
