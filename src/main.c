@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
     // Generate unique run directory
     char *run_dir = NULL;
     if (rank == 0) {
-        run_dir = create_run_directory();
+        run_dir = create_run_directory(GENERATE_FILES);
     }
 
     // Generate and compress matrices
@@ -222,6 +222,10 @@ int main(int argc, char **argv) {
         free_2d_array(matrix_yb, NUM_ROWS);
         free_2d_array(matrix_yc, NUM_ROWS);
         free(row_counts_y);
+        if (!GENERATE_FILES)
+        {
+            delete_temp();
+        }
     }
 
     // Finalize parallelization

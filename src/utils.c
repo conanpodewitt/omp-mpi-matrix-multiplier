@@ -45,11 +45,15 @@ void free_2d_array(int **arr, int rows) {
     free(arr);
 }
 
-char* create_run_directory() {
+char* create_run_directory(int gen_files) {
     static char dir_name[20];
     time_t t = time(NULL);
     struct tm *tm = localtime(&t);
-    strftime(dir_name, sizeof(dir_name), "Run%Y%m%d%H%M%S", tm);
+    if (gen_files) {
+        strftime(dir_name, sizeof(dir_name), "Run%Y%m%d%H%M%S", tm);
+    } else {
+        strftime(dir_name, sizeof(dir_name), "temp", tm);
+    }
     create_directory(dir_name);
     return dir_name;
 }
@@ -59,6 +63,35 @@ void create_directory(const char *path) {
     if (stat(path, &st) == -1) {
         mkdir(path, 0700);
     }
+}
+
+void delete_directory(const char *path) {
+    DIR *dir = opendir(path);
+    struct dirent *entry;
+    char fullpath[1024];
+
+    while ((entry = readdir(dir)) != NULL) {
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+            continue;
+
+        snprintf(fullpath, sizeof(fullpath), "%s/%s", path, entry->d_name);
+
+        struct stat statbuf;
+        stat(fullpath, &statbuf);
+
+        if (S_ISDIR(statbuf.st_mode)) {
+            delete_directory(fullpath);
+        } else {
+            remove(fullpath);
+        }
+    }
+
+    closedir(dir);
+    rmdir(path);
+}
+
+void delete_temp() {
+    delete_directory("temp");
 }
 
 void write_matrix_to_file(const char *filename, int **matrix, int rows, int cols) {
