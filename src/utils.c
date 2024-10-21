@@ -1,5 +1,27 @@
 #include "utils.h"
 
+void initialize_parallelization(int argc, char **argv) {
+    switch (PARALLEL_METHOD) {
+        case METHOD_OMP:
+            // OpenMP is initialized automatically
+            break;
+        case METHOD_MPI:
+            MPI_Init(&argc, &argv);
+            break;
+    }
+}
+
+void finalize_parallelization() {
+    switch (PARALLEL_METHOD) {
+        case METHOD_OMP:
+            // No finalization needed for OpenMP
+            break;
+        case METHOD_MPI:
+            MPI_Finalize();
+            break;
+    }
+}
+
 int** allocate_2d_array(int rows, int cols) {
     int** arr = (int**)malloc(rows * sizeof(int*));
     if (arr == NULL) {
@@ -75,36 +97,45 @@ void write_compressed_matrix_to_file(const char *filename, int **matrix, int row
     fclose(file);
 }
 
-void write_performance_to_file(const char *filename, int num_rows, int num_cols, float prob, int schedule, int chunk_size, double *times, int num_threads) {
+void write_performance_to_file(const char *filename, int num_rows, int num_cols, float prob, int method, int schedule, int chunk_size, double *times, int num_threads) {
     FILE *file = fopen(filename, "w");
     if (file == NULL) {
         fprintf(stderr, "Error opening file %s\n", filename);
         return;
     }
+    char method_str[16];
     char schedule_str[16];
-    switch (schedule) {
-        case 1:
-            strcpy(schedule_str, "Static");
-            break;
-        case 2:
-            strcpy(schedule_str, "Dynamic");
-            break;
-        case 3:
-            strcpy(schedule_str, "Guided");
-            break;
-        case 4:
-            strcpy(schedule_str, "Auto");
-            break;
-    }
     char chunk_size_str[16];
-    if (chunk_size == 0) {
-        strcpy(chunk_size_str, "Default");
-    } else {
-        snprintf(chunk_size_str, sizeof(chunk_size_str), "%d", chunk_size);
+    if (method != METHOD_MPI) {
+        strcpy(method_str, "OMP");
+        switch (schedule) {
+            case 1:
+                strcpy(schedule_str, "Static");
+                break;
+            case 2:
+                strcpy(schedule_str, "Dynamic");
+                break;
+            case 3:
+                strcpy(schedule_str, "Guided");
+                break;
+            case 4:
+                strcpy(schedule_str, "Auto");
+                break;
+        }
+        if (chunk_size == 0) {
+            strcpy(chunk_size_str, "Default");
+        } else {
+            snprintf(chunk_size_str, sizeof(chunk_size_str), "%d", chunk_size);
+        }
     }
-    fprintf(file, "NumRows,NumCols,NonZero,Schedule,ChunkSize,NumThreads,Time\n");
+    else {
+        strcpy(method_str, "MPI");
+        strcpy(schedule_str, "N/A");
+        strcpy(chunk_size_str, "N/A");
+    }
+    fprintf(file, "NumRows,NumCols,NonZero,Method,Schedule,ChunkSize,NumThreads,Time\n");
     for (int i = 0; i < num_threads; i++) {
-        fprintf(file, "%d,%d,%f,%s,%s,%d,%f\n", num_rows, num_cols, prob, schedule_str, chunk_size_str, (i+1)*4, times[i]);
+        fprintf(file, "%d,%d,%f,%s,%s,%s,%d,%f\n", num_rows, num_cols, prob, method_str, schedule_str, chunk_size_str, (i+1)*4, times[i]);
     }
     fclose(file);
 }

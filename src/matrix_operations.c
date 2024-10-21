@@ -55,7 +55,6 @@ int** omp_compressed_matrix_multiply(int** matrix_xb, int** matrix_xc, int* row_
             break;
     }
 
-
     // Parallelize the outermost loop
     #pragma omp parallel for schedule(runtime)
     for (int i = 0; i < NUM_ROWS; i++) {
@@ -73,6 +72,65 @@ int** omp_compressed_matrix_multiply(int** matrix_xb, int** matrix_xc, int* row_
             }
         }
     }
+    return result;
+}
+
+int** mpi_compressed_matrix_multiply(int** matrix_xb, int** matrix_xc, int* row_counts_x, 
+                                     int** matrix_yb, int** matrix_yc, int* row_counts_y) {
+    int rank, size;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+    // Calculate local workload
+    int rows_per_process = NUM_ROWS / size;
+    int start_row = rank * rows_per_process;
+    int end_row = (rank == size - 1) ? NUM_ROWS : start_row + rows_per_process;
+    int local_rows = end_row - start_row;
+
+    // Allocate memory only for the local portion of the result
+    int** local_result = allocate_2d_array(local_rows, NUM_COLUMNS);
+
+    // Perform local matrix multiplication
+    for (int i = 0; i < local_rows; i++) {
+        int global_row = start_row + i;
+        for (int x_idx = 0; x_idx < row_counts_x[global_row]; x_idx++) {
+            int x_value = matrix_xb[global_row][x_idx];
+            int x_col = matrix_xc[global_row][x_idx];
+            for (int y_idx = 0; y_idx < row_counts_y[x_col]; y_idx++) {
+                int y_value = matrix_yb[x_col][y_idx];
+                int y_col = matrix_yc[x_col][y_idx];
+                local_result[i][y_col] += x_value * y_value;
+            }
+        }
+    }
+
+    // Gather results using MPI_Gatherv for flexibility with non-uniform distributions
+    int* recvcounts = NULL;
+    int* displs = NULL;
+    int** result = NULL;
+
+    if (rank == 0) {
+        result = allocate_2d_array(NUM_ROWS, NUM_COLUMNS);
+        recvcounts = (int*)malloc(size * sizeof(int));
+        displs = (int*)malloc(size * sizeof(int));
+
+        for (int i = 0; i < size; i++) {
+            recvcounts[i] = (i == size - 1) ? (NUM_ROWS - i * rows_per_process) * NUM_COLUMNS 
+                                            : rows_per_process * NUM_COLUMNS;
+            displs[i] = i * rows_per_process * NUM_COLUMNS;
+        }
+    }
+
+    MPI_Gatherv(local_result[0], local_rows * NUM_COLUMNS, MPI_INT,
+                result ? result[0] : NULL, recvcounts, displs, MPI_INT, 0, MPI_COMM_WORLD);
+
+    // Free local memory
+    free_2d_array(local_result, local_rows);
+    if (rank == 0) {
+        free(recvcounts);
+        free(displs);
+    }
+
     return result;
 }
 

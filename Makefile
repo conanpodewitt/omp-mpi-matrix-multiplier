@@ -12,14 +12,17 @@ EXECUTABLE = $(BINDIR)/sparse_matrix_mult
 
 # OS-Specific Flags
 ifeq ($(UNAME_S), Linux)
-    CC = gcc
+    CC = mpicc
     CFLAGS = -Wall -Wextra -O3 -fopenmp -march=native -ffast-math
     LDFLAGS = -fopenmp
 else ifeq ($(UNAME_S), Darwin)
-    CC = gcc
+    CC = mpicc
     CFLAGS = -Wall -Wextra -O3 -Xpreprocessor -fopenmp -I/opt/homebrew/Cellar/libomp/18.1.8/include
     LDFLAGS = -L/opt/homebrew/Cellar/libomp/18.1.8/lib -lomp
 endif
+
+# Add MPI-specific flags (optional, if necessary)
+MPIFLAGS = -D_MPI
 
 .PHONY: all clean
 
@@ -28,11 +31,11 @@ all: $(EXECUTABLE)
 
 # Linking the executable
 $(EXECUTABLE): $(OBJECTS) | $(BINDIR)
-	$(CC) $(CFLAGS) $(INCLUDES) $^ -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(INCLUDES) $(MPIFLAGS) $^ -o $@ $(LDFLAGS)
 
 # Compiling each object
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) $(MPIFLAGS) -c $< -o $@
 
 # Create directories if they do not exist
 $(OBJDIR):
