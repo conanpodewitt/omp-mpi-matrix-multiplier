@@ -76,7 +76,7 @@ int** omp_compressed_matrix_multiply(int** matrix_xb, int** matrix_xc, int* row_
 }
 
 int** mpi_compressed_matrix_multiply(int** matrix_xb, int** matrix_xc, int* row_counts_x, 
-                                     int** matrix_yb, int** matrix_yc, int* row_counts_y) {
+                                   int** matrix_yb, int** matrix_yc, int* row_counts_y) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
@@ -87,7 +87,7 @@ int** mpi_compressed_matrix_multiply(int** matrix_xb, int** matrix_xc, int* row_
     int end_row = (rank == size - 1) ? NUM_ROWS : start_row + rows_per_process;
     int local_rows = end_row - start_row;
 
-    // Allocate memory only for the local portion of the result
+    // Allocate memory for local result
     int** local_result = allocate_2d_array(local_rows, NUM_COLUMNS);
 
     // Perform local matrix multiplication
@@ -104,32 +104,67 @@ int** mpi_compressed_matrix_multiply(int** matrix_xb, int** matrix_xc, int* row_
         }
     }
 
-    // Gather results using MPI_Gatherv for flexibility with non-uniform distributions
+    // Prepare for gathering results
+    int** result = NULL;
     int* recvcounts = NULL;
     int* displs = NULL;
-    int** result = NULL;
+    int* local_flat = NULL;
+    int* global_flat = NULL;
+
+    // Flatten local result for MPI communication
+    local_flat = (int*)malloc(local_rows * NUM_COLUMNS * sizeof(int));
+    if (!local_flat) {
+        fprintf(stderr, "Failed to allocate local_flat memory\n");
+        MPI_Abort(MPI_COMM_WORLD, 1);
+    }
+    for (int i = 0; i < local_rows; i++) {
+        memcpy(&local_flat[i * NUM_COLUMNS], local_result[i], NUM_COLUMNS * sizeof(int));
+    }
 
     if (rank == 0) {
+        // Allocate memory for complete result matrix
         result = allocate_2d_array(NUM_ROWS, NUM_COLUMNS);
+        
+        // Prepare receive counts and displacements
         recvcounts = (int*)malloc(size * sizeof(int));
         displs = (int*)malloc(size * sizeof(int));
+        if (!recvcounts || !displs) {
+            fprintf(stderr, "Failed to allocate receive buffers\n");
+            MPI_Abort(MPI_COMM_WORLD, 1);
+        }
 
+        // Calculate receive counts and displacements
         for (int i = 0; i < size; i++) {
-            recvcounts[i] = (i == size - 1) ? (NUM_ROWS - i * rows_per_process) * NUM_COLUMNS 
-                                            : rows_per_process * NUM_COLUMNS;
+            int proc_rows = (i == size - 1) ? (NUM_ROWS - i * rows_per_process) : rows_per_process;
+            recvcounts[i] = proc_rows * NUM_COLUMNS;
             displs[i] = i * rows_per_process * NUM_COLUMNS;
+        }
+
+        // Allocate memory for flattened global result
+        global_flat = (int*)malloc(NUM_ROWS * NUM_COLUMNS * sizeof(int));
+        if (!global_flat) {
+            fprintf(stderr, "Failed to allocate global_flat memory\n");
+            MPI_Abort(MPI_COMM_WORLD, 1);
         }
     }
 
-    MPI_Gatherv(local_result[0], local_rows * NUM_COLUMNS, MPI_INT,
-                result ? result[0] : NULL, recvcounts, displs, MPI_INT, 0, MPI_COMM_WORLD);
+    // Gather results from all processes
+    MPI_Gatherv(local_flat, local_rows * NUM_COLUMNS, MPI_INT,
+                global_flat, recvcounts, displs, MPI_INT, 0, MPI_COMM_WORLD);
 
-    // Free local memory
-    free_2d_array(local_result, local_rows);
+    // Root process: convert flattened array back to 2D array
     if (rank == 0) {
+        for (int i = 0; i < NUM_ROWS; i++) {
+            memcpy(result[i], &global_flat[i * NUM_COLUMNS], NUM_COLUMNS * sizeof(int));
+        }
+        free(global_flat);
         free(recvcounts);
         free(displs);
     }
+
+    // Clean up local memory
+    free(local_flat);
+    free_2d_array(local_result, local_rows);
 
     return result;
 }

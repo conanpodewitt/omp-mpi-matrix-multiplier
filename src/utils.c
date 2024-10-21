@@ -155,3 +155,13 @@ void write_result_to_file(const char *filename, int **matrix, int rows, int cols
     }
     fclose(file);
 }
+
+void check_mpi_error(int error_code, const char* message) {
+    if (error_code != MPI_SUCCESS) {
+        char error_string[MPI_MAX_ERROR_STRING];
+        int length;
+        MPI_Error_string(error_code, error_string, &length);
+        fprintf(stderr, "MPI Error: %s - %s\n", message, error_string);
+        MPI_Abort(MPI_COMM_WORLD, error_code);
+    }
+}
