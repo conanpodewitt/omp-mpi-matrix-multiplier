@@ -18,7 +18,7 @@
 #define PROB 0.01
 
 // Enable file generation
-#define GENERATE_FILE 1
+// TODO #define GENERATE_FILE 1
 
 // OMP Performance parameters
 // Select maximum number of threads
