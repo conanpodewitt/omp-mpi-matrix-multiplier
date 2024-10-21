@@ -6,28 +6,29 @@ int main() {
     // Seed the random number generator
     srand(time(NULL));
 
-    printf("Starting rows: %d\n", NUM_ROWS);
-    printf("Starting cols: %d\n", NUM_COLUMNS);
-    printf("Prob non-zero elements: %f\n", PROB);
-    printf("Max threads: %d\n", MAX_THREADS);
+    // Print the configuration
+    printf("Starting rows: \033[1;32m%d\033[0m\n", NUM_ROWS);
+    printf("Starting cols: \033[1;32m%d\033[0m\n", NUM_COLUMNS);
+    printf("Prob non-zero elements: \033[1;32m%f\033[0m\n", PROB);
+    printf("Max threads: \033[1;32m%d\033[0m\n", MAX_THREADS);
     switch (SCHEDULE) {
         case 1:
-            printf("Scheduling mode: Static\n");
+            printf("Scheduling mode: \033[1;32mStatic\033[0m\n");
             break;
         case 2:
-            printf("Scheduling mode: Dynamic\n");
+            printf("Scheduling mode: \033[1;32mDynamic\033[0m\n");
             break;
         case 3:
-            printf("Scheduling mode: Guided\n");
+            printf("Scheduling mode: \033[1;32mGuided\033[0m\n");
             break;
         case 4:
-            printf("Scheduling mode: Auto\n");
+            printf("Scheduling mode: \033[1;32mAuto\033[0m\n");
             break;
     }
     if (CHUNK_SIZE == 0) {
-        printf("Chunk size: Default\n");
+        printf("Chunk size: \033[1;32mDefault\033[0m\n");
     } else {
-        printf("Chunk size: %d\n", CHUNK_SIZE);
+        printf("Chunk size: \033[1;32m%d\033[0m\n", CHUNK_SIZE);
     }
 
     // Generate unique run directory
@@ -77,7 +78,7 @@ int main() {
         double start_time = omp_get_wtime();
         int** ordinary_result = sequential_matrix_multiply(matrix_x, matrix_y);
         double end_time = omp_get_wtime();
-        printf("Ordinary mult time: %f\n", end_time - start_time);
+        printf("Ordinary mult time: \033[1;32m%f\033[0m\n", end_time - start_time);
 
         char ordinary_file[256];
         snprintf(ordinary_file, sizeof(ordinary_file), "%s/Ordinary.csv", run_dir);
@@ -103,7 +104,7 @@ int main() {
 
         double end_time = omp_get_wtime();
         times[(i/4)-1] = end_time - start_time;
-        printf("Threads: %d, Time: %f\n", i, times[(i/4)-1]);
+        printf("Threads: \033[1;32m%d\033[0m, Time: \033[1;32m%f\033[0m\n", i, times[(i/4)-1]);
 
         // Save the first result
         if (i == 4) {
