@@ -21,7 +21,7 @@
 #define PROB 0.01
 
 // Select the parallelization method
-#define PARALLEL_METHOD METHOD_OMP
+#define PARALLEL_METHOD METHOD_MPI
 
 // Enable file generation
 #define GENERATE_FILES 1

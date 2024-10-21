@@ -1,0 +1,444 @@
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ make
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/main.c -o obj/main.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_generation.c -o obj/matrix_generation.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_operations.c -o obj/matrix_operations.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/utils.c -o obj/utils.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI obj/main.o obj/matrix_generation.o obj/matrix_operations.o obj/utils.o -o bin/sparse_matrix_mult -fopenmp
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ ./bin/sparse_matrix_mult
+NumRows: 10000
+NumCols: 10000
+NonZero: 0.010000
+Method: OMP
+Schedule: Static
+ChunkSize: Default
+Threads: 4, Time: 0.467220
+Threads: 8, Time: 0.291221
+Threads: 12, Time: 0.263205
+Threads: 16, Time: 0.257229
+Threads: 20, Time: 0.221660
+Threads: 24, Time: 0.197035
+Threads: 28, Time: 0.203995
+Threads: 32, Time: 0.197656
+Threads: 36, Time: 0.183584
+    For Sequential Performance (matrix size ≤ 1000):
+
+Threads: 64, Time: 0.235782
+Threads: 68, Time: 0.227876
+Threads: 72, Time: 0.180556
+Threads: 76, Time: 0.182798
+Threads: 80, Time: 0.242317
+Threads: 84, Time: 0.264689
+Threads: 88, Time: 0.182679
+Threads: 92, Time: 0.185768
+Threads: 96, Time: 0.181507
+Threads: 100, Time: 0.184197
+Threads: 104, Time: 0.183767
+Threads: 108, Time: 0.184936
+Threads: 112, Time: 0.228616
+Threads: 116, Time: 0.223403
+Threads: 120, Time: 0.217706
+Threads: 124, Time: 0.221219
+Threads: 128, Time: 0.218188
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ make
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/main.c -o obj/main.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_generation.c -o obj/matrix_generation.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_operations.c -o obj/matrix_operations.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/utils.c -o obj/utils.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI obj/main.o obj/matrix_generation.o obj/matrix_operations.o obj/utils.o -o bin/sparse_matrix_mult -fopenmp
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ ./bin/sparse_matrix_mult
+NumRows: 10000
+NumCols: 10000
+NonZero: 0.020000
+Method: OMP
+Schedule: Static
+ChunkSize: Default
+Threads: 4, Time: 1.251361
+Threads: 8, Time: 0.762051
+Threads: 12, Time: 0.696934
+Threads: 16, Time: 0.594713
+Threads: 20, Time: 0.471800
+Threads: 24, Time: 0.410316
+Threads: 28, Time: 0.473954
+Threads: 32, Time: 0.432939
+Threads: 36, Time: 0.422963
+Threads: 40, Time: 0.406321
+Threads: 44, Time: 0.425076
+Threads: 48, Time: 0.430076
+Threads: 52, Time: 0.420181
+Threads: 56, Time: 0.455183
+Threads: 60, Time: 0.444188
+Threads: 64, Time: 0.410860
+Threads: 68, Time: 0.408823
+Threads: 72, Time: 0.404903
+Threads: 76, Time: 0.503732
+Threads: 80, Time: 0.410685
+Threads: 84, Time: 0.396642
+Threads: 88, Time: 0.399136
+Threads: 92, Time: 0.442018
+Threads: 96, Time: 0.421123
+Threads: 100, Time: 0.404985
+Threads: 104, Time: 0.415061
+Threads: 108, Time: 0.404252
+Threads: 112, Time: 0.389284
+Threads: 116, Time: 0.442830
+Threads: 120, Time: 0.592638
+Threads: 124, Time: 0.411321
+Threads: 128, Time: 0.407101
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ make
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/main.c -o obj/main.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_generation.c -o obj/matrix_generation.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_operations.c -o obj/matrix_operations.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/utils.c -o obj/utils.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI obj/main.o obj/matrix_generation.o obj/matrix_operations.o obj/utils.o -o bin/sparse_matrix_mult -fopenmp
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ ./bin/sparse_matrix_mult
+NumRows: 10000
+NumCols: 10000
+NonZero: 0.050000
+Method: OMP
+Schedule: Static
+ChunkSize: Default
+Threads: 4, Time: 6.345338
+Threads: 8, Time: 3.203601
+Threads: 12, Time: 2.826010
+Threads: 16, Time: 2.361336
+Threads: 20, Time: 2.257703
+Threads: 24, Time: 1.939833
+Threads: 28, Time: 1.994066
+Threads: 32, Time: 2.117507
+Threads: 36, Time: 1.929336
+Threads: 40, Time: 1.930420
+Threads: 44, Time: 2.012057
+Threads: 48, Time: 1.944346
+Threads: 52, Time: 1.913187
+Threads: 56, Time: 1.968098
+Threads: 60, Time: 1.891397
+Threads: 64, Time: 1.919973
+Threads: 68, Time: 1.889278
+Threads: 72, Time: 1.952871
+Threads: 76, Time: 1.879956
+Threads: 80, Time: 1.927042
+Threads: 84, Time: 1.972939
+Threads: 88, Time: 2.003287
+Threads: 92, Time: 1.946138
+Threads: 96, Time: 1.923908
+Threads: 100, Time: 1.929922
+Threads: 104, Time: 1.916349
+Threads: 108, Time: 1.891131
+Threads: 112, Time: 1.884696
+Threads: 116, Time: 1.892097
+Threads: 120, Time: 1.878568
+Threads: 124, Time: 1.878066
+Threads: 128, Time: 1.899670
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ make
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/main.c -o obj/main.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_generation.c -o obj/matrix_generation.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_operations.c -o obj/matrix_operations.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/utils.c -o obj/utils.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI obj/main.o obj/matrix_generation.o obj/matrix_operations.o obj/utils.o -o bin/sparse_matrix_mult -fopenmp
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ ./bin/sparse_matrix_mult
+NumRows: 10000
+NumCols: 10000
+NonZero: 0.010000
+Method: MPI
+Threads: 4, Time: 1.279165
+Threads: 8, Time: 1.283908
+Threads: 12, Time: 1.269890
+Threads: 16, Time: 1.313151
+Threads: 20, Time: 1.271882
+Threads: 24, Time: 1.263961
+Threads: 28, Time: 1.275287
+Threads: 32, Time: 1.261358
+Threads: 36, Time: 1.261836
+Threads: 40, Time: 1.287507
+Threads: 44, Time: 1.286479
+Threads: 48, Time: 1.280337
+Threads: 52, Time: 1.264728
+Threads: 56, Time: 1.262103
+Threads: 60, Time: 1.263648
+Threads: 64, Time: 1.260426
+Threads: 68, Time: 1.254400
+Threads: 72, Time: 1.323173
+Threads: 76, Time: 1.286052
+Threads: 80, Time: 1.275410
+Threads: 84, Time: 1.277513
+Threads: 88, Time: 1.338908
+Threads: 92, Time: 1.259012
+Threads: 96, Time: 1.278704
+Threads: 100, Time: 1.262262
+Threads: 104, Time: 1.262537
+Threads: 108, Time: 1.550936
+Threads: 112, Time: 1.298384
+Threads: 116, Time: 1.282772
+Threads: 120, Time: 1.281938
+Threads: 124, Time: 1.284146
+Threads: 128, Time: 1.294128
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ make
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/main.c -o obj/main.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_generation.c -o obj/matrix_generation.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_operations.c -o obj/matrix_operations.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/utils.c -o obj/utils.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI obj/main.o obj/matrix_generation.o obj/matrix_operations.o obj/utils.o -o bin/sparse_matrix_mult -fopenmp
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ ./bin/sparse_matrix_mult
+NumRows: 10000
+NumCols: 10000
+NonZero: 0.020000
+Method: MPI
+Threads: 4, Time: 2.344905
+Threads: 8, Time: 2.181723
+Threads: 12, Time: 2.033456
+Threads: 16, Time: 2.118066
+Threads: 20, Time: 2.161027
+Threads: 24, Time: 2.117473
+Threads: 28, Time: 2.119623
+Threads: 32, Time: 2.095256
+Threads: 36, Time: 2.129493
+Threads: 40, Time: 2.316148
+Threads: 44, Time: 2.299661
+Threads: 48, Time: 2.279871
+Threads: 52, Time: 2.259992
+Threads: 56, Time: 2.082126
+Threads: 60, Time: 2.049730
+Threads: 64, Time: 2.052818
+Threads: 68, Time: 2.024166
+Threads: 72, Time: 2.058507
+Threads: 76, Time: 2.063718
+Threads: 80, Time: 2.087397
+Threads: 84, Time: 2.066323
+Threads: 88, Time: 2.061469
+Threads: 92, Time: 2.064811
+Threads: 96, Time: 2.053896
+Threads: 100, Time: 2.049470
+Threads: 104, Time: 2.063387
+Threads: 108, Time: 2.117309
+Threads: 112, Time: 2.061755
+Threads: 116, Time: 2.016683
+Threads: 120, Time: 2.089902
+Threads: 124, Time: 2.079757
+Threads: 128, Time: 2.056989
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ make
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/main.c -o obj/main.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_generation.c -o obj/matrix_generation.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_operations.c -o obj/matrix_operations.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/utils.c -o obj/utils.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI obj/main.o obj/matrix_generation.o obj/matrix_operations.o obj/utils.o -o bin/sparse_matrix_mult -fopenmp
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ ./bin/sparse_matrix_mult
+NumRows: 10000
+NumCols: 10000
+NonZero: 0.050000
+Method: MPI
+Threads: 4, Time: 6.512425
+Threads: 8, Time: 6.462349
+Threads: 12, Time: 6.330119
+Threads: 16, Time: 6.175394
+Threads: 20, Time: 6.315637
+Threads: 24, Time: 6.243633
+Threads: 28, Time: 6.161415
+Threads: 32, Time: 6.142640
+Threads: 36, Time: 6.173077
+Threads: 40, Time: 6.240130
+Threads: 44, Time: 6.317317
+Threads: 48, Time: 6.232945
+Threads: 52, Time: 6.348389
+Threads: 56, Time: 6.285716
+Threads: 60, Time: 6.238963
+Threads: 64, Time: 6.300541
+Threads: 68, Time: 6.284364
+Threads: 72, Time: 6.366640
+Threads: 76, Time: 6.356259
+Threads: 80, Time: 6.735792
+Threads: 84, Time: 6.242815
+Threads: 88, Time: 6.286141
+Threads: 92, Time: 6.295040
+Threads: 96, Time: 6.505402
+Threads: 100, Time: 6.859190
+Threads: 104, Time: 6.582904
+Threads: 108, Time: 6.241405
+Threads: 112, Time: 6.244440
+Threads: 116, Time: 6.226901
+Threads: 120, Time: 6.556380
+Threads: 124, Time: 6.411422
+Threads: 128, Time: 6.234726
+
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ make
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/main.c -o obj/main.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_generation.c -o obj/matrix_generation.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_operations.c -o obj/matrix_operations.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/utils.c -o obj/utils.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI obj/main.o obj/matrix_generation.o obj/matrix_operations.o obj/utils.o -o bin/sparse_matrix_mult -fopenmp
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ ./bin/sparse_matrix_mult
+NumRows: 999
+NumCols: 999
+NonZero: 0.050000
+Method: OMP
+Schedule: Static
+ChunkSize: Default
+Sequential: 9.268729
+Threads: 4, Time: 0.007283
+Threads: 8, Time: 0.004292
+Threads: 12, Time: 0.004682
+Threads: 16, Time: 0.004191
+Threads: 20, Time: 0.003536
+Threads: 24, Time: 0.006707
+Threads: 28, Time: 0.005785
+Threads: 32, Time: 0.004071
+Threads: 36, Time: 0.003796
+Threads: 40, Time: 0.003553
+Threads: 44, Time: 0.003642
+Threads: 48, Time: 0.003448
+Threads: 52, Time: 0.003719
+Threads: 56, Time: 0.003633
+Threads: 60, Time: 0.003832
+Threads: 64, Time: 0.003707
+Threads: 68, Time: 0.003501
+Threads: 72, Time: 0.003721
+Threads: 76, Time: 0.003642
+Threads: 80, Time: 0.003440
+Threads: 84, Time: 0.003941
+Threads: 88, Time: 0.003923
+Threads: 92, Time: 0.003502
+Threads: 96, Time: 0.003511
+Threads: 100, Time: 0.003658
+Threads: 104, Time: 0.003557
+Threads: 108, Time: 0.003687
+Threads: 112, Time: 0.003790
+Threads: 116, Time: 0.003751
+Threads: 120, Time: 0.003561
+Threads: 124, Time: 0.003721
+Threads: 128, Time: 0.003717
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ make
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/main.c -o obj/main.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_generation.c -o obj/matrix_generation.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_operations.c -o obj/matrix_operations.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/utils.c -o obj/utils.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI obj/main.o obj/matrix_generation.o obj/matrix_operations.o obj/utils.o -o bin/sparse_matrix_mult -fopenmp
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ ./bin/sparse_matrix_mult
+NumRows: 999
+NumCols: 999
+NonZero: 0.050000
+Method: MPI
+Sequential: 9.328443
+Threads: 4, Time: 0.014870
+Threads: 8, Time: 0.014836
+Threads: 12, Time: 0.020151
+Threads: 16, Time: 0.018563
+Threads: 20, Time: 0.020504
+Threads: 24, Time: 0.020165
+Threads: 28, Time: 0.016533
+Threads: 32, Time: 0.015541
+Threads: 36, Time: 0.015378
+Threads: 40, Time: 0.014716
+Threads: 44, Time: 0.014603
+Threads: 48, Time: 0.014504
+Threads: 52, Time: 0.014794
+Threads: 56, Time: 0.014322
+Threads: 60, Time: 0.014743
+Threads: 64, Time: 0.014444
+Threads: 68, Time: 0.014701
+Threads: 72, Time: 0.016918
+Threads: 76, Time: 0.019830
+Threads: 80, Time: 0.019763
+Threads: 84, Time: 0.015414
+Threads: 88, Time: 0.015971
+Threads: 92, Time: 0.016129
+Threads: 96, Time: 0.015868
+Threads: 100, Time: 0.016383
+Threads: 104, Time: 0.016971
+Threads: 108, Time: 0.016177
+Threads: 112, Time: 0.015641
+Threads: 116, Time: 0.016496
+Threads: 120, Time: 0.016102
+Threads: 124, Time: 0.016800
+Threads: 128, Time: 0.016043
+
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ make
+mkdir -p obj
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/main.c -o obj/main.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_generation.c -o obj/matrix_generation.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_operations.c -o obj/matrix_operations.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/utils.c -o obj/utils.o
+mkdir -p bin
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI obj/main.o obj/matrix_generation.o obj/matrix_operations.o obj/utils.o -o bin/sparse_matrix_mult -fopenmp
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ ./bin/sparse_matrix_mult
+NumRows: 100
+NumCols: 100
+NonZero: 0.010000
+Method: OMP
+Schedule: Static
+ChunkSize: Default
+Sequential: 0.001065
+Threads: 4, Time: 0.000293
+Threads: 8, Time: 0.000229
+Threads: 12, Time: 0.000261
+Threads: 16, Time: 0.000327
+Threads: 20, Time: 0.000265
+Threads: 24, Time: 0.004341
+Threads: 28, Time: 0.001382
+Threads: 32, Time: 0.000331
+Threads: 36, Time: 0.000332
+Threads: 40, Time: 0.000530
+Threads: 44, Time: 0.000395
+Threads: 48, Time: 0.000376
+Threads: 52, Time: 0.000455
+Threads: 56, Time: 0.000383
+Threads: 60, Time: 0.000444
+Threads: 64, Time: 0.000377
+Threads: 68, Time: 0.000474
+Threads: 72, Time: 0.000485
+Threads: 76, Time: 0.000429
+Threads: 80, Time: 0.000422
+Threads: 84, Time: 0.000455
+Threads: 88, Time: 0.000541
+Threads: 92, Time: 0.000559
+Threads: 96, Time: 0.000632
+Threads: 100, Time: 0.000640
+Threads: 104, Time: 0.000536
+Threads: 108, Time: 0.000544
+Threads: 112, Time: 0.000542
+Threads: 116, Time: 0.000546
+Threads: 120, Time: 0.000674
+Threads: 124, Time: 0.000655
+Threads: 128, Time: 0.000611
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ make
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/main.c -o obj/main.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_generation.c -o obj/matrix_generation.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/matrix_operations.c -o obj/matrix_operations.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI -c src/utils.c -o obj/utils.o
+mpicc -Wall -Wextra -O3 -fopenmp -march=native -ffast-math -Iinclude -D_MPI obj/main.o obj/matrix_generation.o obj/matrix_operations.o obj/utils.o -o bin/sparse_matrix_mult -fopenmp
+conan@cpdpop:~/Documents/Work/Owned/omp-mpi-matrix-multiplier$ ./bin/sparse_matrix_mult
+NumRows: 100
+NumCols: 100
+NonZero: 0.010000
+Method: MPI
+Sequential: 0.001905
+Threads: 4, Time: 0.000232
+Threads: 8, Time: 0.000088
+Threads: 12, Time: 0.000037
+Threads: 16, Time: 0.000060
+Threads: 20, Time: 0.000037
+Threads: 24, Time: 0.000037
+Threads: 28, Time: 0.000036
+Threads: 32, Time: 0.000038
+Threads: 36, Time: 0.000026
+Threads: 40, Time: 0.000025
+Threads: 44, Time: 0.000025
+Threads: 48, Time: 0.000025
+Threads: 52, Time: 0.000025
+Threads: 56, Time: 0.000025
+Threads: 60, Time: 0.000024
+Threads: 64, Time: 0.000052
+Threads: 68, Time: 0.000053
+Threads: 72, Time: 0.000053
+Threads: 76, Time: 0.000053
+Threads: 80, Time: 0.000053
+Threads: 84, Time: 0.000058
+Threads: 88, Time: 0.000025
+Threads: 92, Time: 0.000078
+Threads: 96, Time: 0.000026
+Threads: 100, Time: 0.000025
+Threads: 104, Time: 0.000025
+Threads: 108, Time: 0.000025
+Threads: 112, Time: 0.000025
+Threads: 116, Time: 0.000024
+Threads: 120, Time: 0.000024
+Threads: 124, Time: 0.000024
+Threads: 128, Time: 0.000024

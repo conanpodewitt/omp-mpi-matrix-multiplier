@@ -68,14 +68,14 @@ int main(int argc, char **argv) {
             // Perform sequential multiplication for small matrices
             if (NUM_ROWS < 1000 && NUM_COLUMNS < 1000) {
                 double start_time = omp_get_wtime();
-                int** ordinary_result = sequential_matrix_multiply(matrix_x, matrix_y);
+                int** sequential_result = sequential_matrix_multiply(matrix_x, matrix_y);
                 double end_time = omp_get_wtime();
-                printf("Ordinary mult time: \033[1;32m%f\033[0m\n", end_time - start_time);
+                printf("Sequential: \033[1;32m%f\033[0m\n", end_time - start_time);
 
                 char ordinary_file[256];
                 snprintf(ordinary_file, sizeof(ordinary_file), "%s/SequentialResults.csv", run_dir);
-                write_matrix_to_file(ordinary_file, ordinary_result, NUM_ROWS, NUM_COLUMNS);
-                free_2d_array(ordinary_result, NUM_ROWS);
+                write_matrix_to_file(ordinary_file, sequential_result, NUM_ROWS, NUM_COLUMNS);
+                free_2d_array(sequential_result, NUM_ROWS);
             }
         }
 
