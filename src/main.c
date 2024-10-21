@@ -1,20 +1,37 @@
 #include "utils.h"
 #include "matrix_operations.h"
 #include "matrix_generation.h"
-#include <omp.h>
 
 int main() {
     // Seed the random number generator
     srand(time(NULL));
 
-    printf("Scheduling mode: %d\n", SCHEDULE);
-    printf("Chunk size: %d\n", CHUNK_SIZE);
     printf("Starting rows: %d\n", NUM_ROWS);
     printf("Starting cols: %d\n", NUM_COLUMNS);
-    printf("Probability of non-zero elements: %f\n", PROB);
+    printf("Prob non-zero elements: %f\n", PROB);
+    printf("Max threads: %d\n", MAX_THREADS);
+    switch (SCHEDULE) {
+        case 1:
+            printf("Scheduling mode: Static\n");
+            break;
+        case 2:
+            printf("Scheduling mode: Dynamic\n");
+            break;
+        case 3:
+            printf("Scheduling mode: Guided\n");
+            break;
+        case 4:
+            printf("Scheduling mode: Auto\n");
+            break;
+    }
+    if (CHUNK_SIZE == 0) {
+        printf("Chunk size: Default\n");
+    } else {
+        printf("Chunk size: %d\n", CHUNK_SIZE);
+    }
 
     // Generate unique run directory
-    char *run_dir = generate_unique_run_directory();
+    char *run_dir = create_run_directory();
     char dir_x[256], dir_y[256];
     snprintf(dir_x, sizeof(dir_x), "%s/DirX", run_dir);
     snprintf(dir_y, sizeof(dir_y), "%s/DirY", run_dir);
@@ -58,13 +75,13 @@ int main() {
     // Perform ordinary matrix multiplication if matrix size is less than 1000x1000
     if (NUM_ROWS < 1000 && NUM_COLUMNS < 1000) {
         double start_time = omp_get_wtime();
-        int** ordinary_result = multiply_matrices(matrix_x, matrix_y);
+        int** ordinary_result = sequential_matrix_multiply(matrix_x, matrix_y);
         double end_time = omp_get_wtime();
-        printf("Ordinary multiplication time: %f seconds\n", end_time - start_time);
+        printf("Ordinary mult time: %f\n", end_time - start_time);
 
         char ordinary_file[256];
         snprintf(ordinary_file, sizeof(ordinary_file), "%s/Ordinary.csv", run_dir);
-        write_result_to_csv(ordinary_file, ordinary_result, NUM_ROWS, NUM_COLUMNS);
+        write_result_to_file(ordinary_file, ordinary_result, NUM_ROWS, NUM_COLUMNS);
 
         free_2d_array(ordinary_result, NUM_ROWS);
     }
@@ -81,8 +98,8 @@ int main() {
         double start_time = omp_get_wtime();
 
         // Multiply the compressed matrices
-        int** result = parallel_compressed_matrix_multiply(matrix_xb, matrix_xc, row_counts_x, 
-                                                           matrix_yb, matrix_yc, row_counts_y, DEBUG);
+        int** result = omp_compressed_matrix_multiply(matrix_xb, matrix_xc, row_counts_x, 
+                                                      matrix_yb, matrix_yc, row_counts_y);
 
         double end_time = omp_get_wtime();
         times[(i/4)-1] = end_time - start_time;
@@ -99,12 +116,12 @@ int main() {
     // Write the first result to CompressedResults.csv
     char compress_file[256];
     snprintf(compress_file, sizeof(compress_file), "%s/CompressedResults.csv", run_dir);
-    write_result_to_csv(compress_file, first_result, NUM_ROWS, NUM_COLUMNS);
+    write_result_to_file(compress_file, first_result, NUM_ROWS, NUM_COLUMNS);
 
     // Write performance data to Performance.csv
     char performance_file[256];
     snprintf(performance_file, sizeof(performance_file), "%s/Performance.csv", run_dir);
-    write_performance_to_csv(performance_file, SCHEDULE, CHUNK_SIZE, NUM_ROWS, NUM_COLUMNS, times, MAX_THREADS/4);
+    write_performance_to_file(performance_file, SCHEDULE, CHUNK_SIZE, NUM_ROWS, NUM_COLUMNS, times, MAX_THREADS/4);
 
     // Free the first result matrix
     free_2d_array(first_result, NUM_ROWS);

@@ -85,4 +85,4 @@ void compress_matrix(int** matrix, int*** compressed_values, int*** compressed_c
 ```
 
 ### Ordinary Matrix Multiplication
-This project also includes a function named `multiply_matrices()` that multiplies ordinary matrices by the standard method. However, this function is only called upon if the specified input matrices are equal or less than 1,000 by 1,000. The results from the ordinary multiplication are returned to the output directory, and as such can be verified alongside the sparse multiplication results.
+This project also includes a function named `sequential_matrix_multiply()` that multiplies ordinary matrices by the standard method. However, this function is only called upon if the specified input matrices are equal or less than 1,000 by 1,000. The results from the ordinary multiplication are returned to the output directory, and as such can be verified alongside the sparse multiplication results.

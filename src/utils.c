@@ -23,6 +23,15 @@ void free_2d_array(int **arr, int rows) {
     free(arr);
 }
 
+char* create_run_directory() {
+    static char dir_name[20];
+    time_t t = time(NULL);
+    struct tm *tm = localtime(&t);
+    strftime(dir_name, sizeof(dir_name), "Run%Y%m%d%H%M%S", tm);
+    create_directory(dir_name);
+    return dir_name;
+}
+
 void create_directory(const char *path) {
     struct stat st = {0};
     if (stat(path, &st) == -1) {
@@ -66,7 +75,7 @@ void write_compressed_matrix_to_file(const char *filename, int **matrix, int row
     fclose(file);
 }
 
-void write_performance_to_csv(const char *filename, int schedule, int chunk_size, int num_rows, int num_cols, double *times, int num_threads) {
+void write_performance_to_file(const char *filename, int schedule, int chunk_size, int num_rows, int num_cols, double *times, int num_threads) {
     FILE *file = fopen(filename, "w");
     if (file == NULL) {
         fprintf(stderr, "Error opening file %s\n", filename);
@@ -79,7 +88,7 @@ void write_performance_to_csv(const char *filename, int schedule, int chunk_size
     fclose(file);
 }
 
-void write_result_to_csv(const char *filename, int **matrix, int rows, int cols) {
+void write_result_to_file(const char *filename, int **matrix, int rows, int cols) {
     FILE *file = fopen(filename, "w");
     if (file == NULL) {
         fprintf(stderr, "Error opening file %s\n", filename);
@@ -93,13 +102,4 @@ void write_result_to_csv(const char *filename, int **matrix, int rows, int cols)
         fprintf(file, "\n");
     }
     fclose(file);
-}
-
-char* generate_unique_run_directory() {
-    static char dir_name[20];
-    time_t t = time(NULL);
-    struct tm *tm = localtime(&t);
-    strftime(dir_name, sizeof(dir_name), "Run%Y%m%d%H%M%S", tm);
-    create_directory(dir_name);
-    return dir_name;
 }

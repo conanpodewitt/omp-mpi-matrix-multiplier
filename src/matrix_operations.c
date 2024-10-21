@@ -1,6 +1,6 @@
 #include "matrix_operations.h"
 
-int** multiply_matrices(int** matrix1, int** matrix2) {
+int** sequential_matrix_multiply(int** matrix1, int** matrix2) {
     int** result = allocate_2d_array(NUM_ROWS, NUM_COLUMNS);
 
     for (int i = 0; i < NUM_ROWS; i++) {
@@ -15,9 +15,8 @@ int** multiply_matrices(int** matrix1, int** matrix2) {
     return result;
 }
 
-int** parallel_compressed_matrix_multiply(int** matrix_xb, int** matrix_xc, int* row_counts_x, 
-                                          int** matrix_yb, int** matrix_yc, int* row_counts_y, 
-                                          int debug) {
+int** omp_compressed_matrix_multiply(int** matrix_xb, int** matrix_xc, int* row_counts_x, 
+                                     int** matrix_yb, int** matrix_yc, int* row_counts_y) {
     // Allocate memory for the result matrix
     int** result = allocate_2d_array(NUM_ROWS, NUM_COLUMNS);
 
@@ -74,19 +73,6 @@ int** parallel_compressed_matrix_multiply(int** matrix_xb, int** matrix_xc, int*
             }
         }
     }
-
-    if (debug) {
-        // Print the result matrix for verification
-        printf("Result:\n");
-        for (int i = 0; i < NUM_ROWS; i++) {
-            printf("Row %d: ", i);
-            for (int j = 0; j < NUM_COLUMNS; j++) {
-                printf("%d ", result[i][j]);
-            }
-            printf("\n");
-        }
-    }
-
     return result;
 }
 
