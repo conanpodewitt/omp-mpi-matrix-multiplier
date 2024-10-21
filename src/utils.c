@@ -75,15 +75,36 @@ void write_compressed_matrix_to_file(const char *filename, int **matrix, int row
     fclose(file);
 }
 
-void write_performance_to_file(const char *filename, int schedule, int chunk_size, int num_rows, int num_cols, double *times, int num_threads) {
+void write_performance_to_file(const char *filename, int num_rows, int num_cols, float prob, int schedule, int chunk_size, double *times, int num_threads) {
     FILE *file = fopen(filename, "w");
     if (file == NULL) {
         fprintf(stderr, "Error opening file %s\n", filename);
         return;
     }
-    fprintf(file, "Schedule,ChunkSize,NumRows,NumCols,NumThreads,Time\n");
+    char schedule_str[16];
+    switch (schedule) {
+        case 1:
+            strcpy(schedule_str, "Static");
+            break;
+        case 2:
+            strcpy(schedule_str, "Dynamic");
+            break;
+        case 3:
+            strcpy(schedule_str, "Guided");
+            break;
+        case 4:
+            strcpy(schedule_str, "Auto");
+            break;
+    }
+    char chunk_size_str[16];
+    if (chunk_size == 0) {
+        strcpy(chunk_size_str, "Default");
+    } else {
+        snprintf(chunk_size_str, sizeof(chunk_size_str), "%d", chunk_size);
+    }
+    fprintf(file, "NumRows,NumCols,NonZero,Schedule,ChunkSize,NumThreads,Time\n");
     for (int i = 0; i < num_threads; i++) {
-        fprintf(file, "%d,%d,%d,%d,%d,%f\n", schedule, chunk_size, num_rows, num_cols, (i+1)*4, times[i]);
+        fprintf(file, "%d,%d,%f,%s,%s,%d,%f\n", num_rows, num_cols, prob, schedule_str, chunk_size_str, (i+1)*4, times[i]);
     }
     fclose(file);
 }

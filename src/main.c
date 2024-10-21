@@ -7,28 +7,27 @@ int main() {
     srand(time(NULL));
 
     // Print the configuration
-    printf("Starting rows: \033[1;32m%d\033[0m\n", NUM_ROWS);
-    printf("Starting cols: \033[1;32m%d\033[0m\n", NUM_COLUMNS);
-    printf("Prob non-zero elements: \033[1;32m%f\033[0m\n", PROB);
-    printf("Max threads: \033[1;32m%d\033[0m\n", MAX_THREADS);
+    printf("NumRows: \033[1;32m%d\033[0m\n", NUM_ROWS);
+    printf("NumCols: \033[1;32m%d\033[0m\n", NUM_COLUMNS);
+    printf("NonZero: \033[1;32m%f\033[0m\n", PROB);
     switch (SCHEDULE) {
         case 1:
-            printf("Scheduling mode: \033[1;32mStatic\033[0m\n");
+            printf("Schedule: \033[1;32mStatic\033[0m\n");
             break;
         case 2:
-            printf("Scheduling mode: \033[1;32mDynamic\033[0m\n");
+            printf("Schedule: \033[1;32mDynamic\033[0m\n");
             break;
         case 3:
-            printf("Scheduling mode: \033[1;32mGuided\033[0m\n");
+            printf("Schedule: \033[1;32mGuided\033[0m\n");
             break;
         case 4:
-            printf("Scheduling mode: \033[1;32mAuto\033[0m\n");
+            printf("Schedule: \033[1;32mAuto\033[0m\n");
             break;
     }
     if (CHUNK_SIZE == 0) {
-        printf("Chunk size: \033[1;32mDefault\033[0m\n");
+        printf("ChunkSize: \033[1;32mDefault\033[0m\n");
     } else {
-        printf("Chunk size: \033[1;32m%d\033[0m\n", CHUNK_SIZE);
+        printf("ChunkSize: \033[1;32m%d\033[0m\n", CHUNK_SIZE);
     }
 
     // Generate unique run directory
@@ -81,7 +80,7 @@ int main() {
         printf("Ordinary mult time: \033[1;32m%f\033[0m\n", end_time - start_time);
 
         char ordinary_file[256];
-        snprintf(ordinary_file, sizeof(ordinary_file), "%s/Ordinary.csv", run_dir);
+        snprintf(ordinary_file, sizeof(ordinary_file), "%s/SequentialResults.csv", run_dir);
         write_result_to_file(ordinary_file, ordinary_result, NUM_ROWS, NUM_COLUMNS);
 
         free_2d_array(ordinary_result, NUM_ROWS);
@@ -116,13 +115,13 @@ int main() {
 
     // Write the first result to CompressedResults.csv
     char compress_file[256];
-    snprintf(compress_file, sizeof(compress_file), "%s/CompressedResults.csv", run_dir);
+    snprintf(compress_file, sizeof(compress_file), "%s/ParallelResults.csv", run_dir);
     write_result_to_file(compress_file, first_result, NUM_ROWS, NUM_COLUMNS);
 
     // Write performance data to Performance.csv
     char performance_file[256];
     snprintf(performance_file, sizeof(performance_file), "%s/Performance.csv", run_dir);
-    write_performance_to_file(performance_file, SCHEDULE, CHUNK_SIZE, NUM_ROWS, NUM_COLUMNS, times, MAX_THREADS/4);
+    write_performance_to_file(performance_file, NUM_ROWS, NUM_COLUMNS, PROB, SCHEDULE, CHUNK_SIZE, times, MAX_THREADS/4);
 
     // Free the first result matrix
     free_2d_array(first_result, NUM_ROWS);

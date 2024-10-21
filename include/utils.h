@@ -17,12 +17,15 @@
 // Set the probability of non-zero elements
 #define PROB 0.01
 
+// Enable file generation
+#define GENERATE_FILE 1
+
 // OMP Performance parameters
 // Select maximum number of threads
 #define MAX_THREADS 128
-// Choose a scheduling type: 1 for static, 2 for dynamic, 3 for guided, 4 for auto
+// Choose a scheduling type:
 #define SCHEDULE SCHEDULE_STATIC
-// Select chunk size for scheduling. Use 0 for default chunk size in static, dynamic, and guided schedules (ignored in auto)
+// Select chunk size for scheduling: Use 0 for default chunk size in static, dynamic, and guided schedules (ignored in auto)
 #define CHUNK_SIZE 0
 
 // Don't change these
@@ -40,7 +43,7 @@ char* create_run_directory();
 void create_directory(const char *path);
 void write_matrix_to_file(const char *filename, int **matrix, int rows, int cols);
 void write_compressed_matrix_to_file(const char *filename, int **matrix, int rows, int cols);
-void write_performance_to_file(const char *filename, int schedule, int chunk_size, int num_rows, int num_cols, double *times, int num_threads);
+void write_performance_to_file(const char *filename, int num_rows, int num_cols, float prob, int schedule, int chunk_size, double *times, int num_threads);
 void write_result_to_file(const char *filename, int **matrix, int rows, int cols);
 
 #endif // UTILS_H
